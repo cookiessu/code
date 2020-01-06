@@ -1,0 +1,1339 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SomeCode : MonoBehaviour {
+
+	// Use this for initialization
+	void Start () {
+
+        StartEquipGun();
+       // StartFight();
+    }
+
+    public void StartFight() {
+
+        Boss satan = new Boss();
+
+        FishingObserver player1 = new FishingObserver("剑士", satan);
+        WaitingObserver player2 = new WaitingObserver("战斧斗士", satan);
+
+        satan.Update += new EventHandler(player1.CloseFishing);
+        satan.Update += new EventHandler(player2.CloseWaiting);
+
+        satan.SubjectState = "战斗开始！";
+        satan.Notify();
+    }
+
+    interface Subject
+    {
+        void Notify();
+
+        string SubjectState
+        {
+            get;
+            set;
+        }
+    }
+
+    delegate void EventHandler();
+
+    class Boss : Subject
+    {
+        public event EventHandler Update;
+        private string action;
+        public void Notify()
+        {
+            Update();
+        }
+
+        public string SubjectState
+        {
+            get { return action; }
+            set { action = value; }
+        }
+    }
+
+    class BossBrother : Subject
+    {
+        public event EventHandler Update;
+        private string action;
+        public void Notify()
+        {
+            Update();
+        }
+
+        public string SubjectState
+        {
+            get { return action; }
+            set { action = value; }
+        }
+    }
+    class FishingObserver
+    {
+        private string name;
+
+        private Subject sub;
+
+        public FishingObserver(string name, Subject sub)
+        {
+            this.name = name;
+            this.sub = sub;
+        }
+
+        public void CloseFishing()
+        {
+            Debug.Log(sub.SubjectState + name);
+        }
+    }
+
+    class WaitingObserver
+    {
+        private string name;
+
+        private Subject sub;
+
+        public WaitingObserver(string name, Subject sub)
+        {
+            this.name = name;
+            this.sub = sub;
+        }
+
+        public void CloseWaiting()
+        {
+            Debug.Log(sub.SubjectState + name);
+        }
+    }
+
+ 
+    static void StartEquipGun()
+    {
+        Gun gun = new Gun("98k");
+        
+        SightingTelescopeX8 pqx = new SightingTelescopeX8();
+        FastClip fc = new FastClip();
+        RifleCovers rc = new RifleCovers();
+        pqx.Decorate(gun);
+        fc.Decorate(pqx);
+        rc.Decorate(fc);
+        rc.Show();
+        
+        SightingTelescopeX6 px = new SightingTelescopeX6();
+        Butt b = new Butt();
+        Stabilizer s = new Stabilizer();
+        px.Decorate(gun);
+        b.Decorate(px);
+        s.Decorate(b);
+        s.Show();
+        
+        SightingTelescopeX8 pqx2 = new SightingTelescopeX8();
+        FastClip fc2 = new FastClip();
+        Butt b2 = new Butt();
+        pqx2.Decorate(gun);
+        fc2.Decorate(pqx2);
+        b2.Decorate(fc2);
+        b2.Show();
+        
+    }
+    
+
+    class Gun
+    {
+        public Gun()
+        {
+
+        }
+
+        private string name;
+
+        public Gun(string name)
+        {
+            this.name = name;
+        }
+
+        public virtual void Show()
+        {
+            Debug.Log("装扮的"+  name);
+        }
+    }
+
+    class Finery : Gun
+    {
+        protected Gun component;
+
+        public void Decorate(Gun component)
+        {
+            this.component = component;
+        }
+
+        public override void Show()
+        {
+            if (component != null)
+            {
+                component.Show();
+            }
+        }
+    }
+
+
+    class RifleCovers : Finery
+    {
+        public override void Show()
+        {
+            Debug.Log("RifleCovers ");
+            base.Show();
+        }
+    }
+
+    class FastClip : Finery
+    {
+        public override void Show()
+        {
+            Debug.Log("FastClip ");
+            base.Show();
+        }
+    }
+
+    class SightingTelescopeX8 : Finery
+    {
+        public override void Show()
+        {
+            Debug.Log("SightingTelescopeX8 ");
+            base.Show();
+        }
+    }
+
+    class Stabilizer : Finery
+    {
+        public override void Show()
+        {
+            Debug.Log("Stabilizer ");
+            base.Show();
+        }
+    }
+
+    class Butt : Finery
+    {
+        public override void Show()
+        {
+            Debug.Log("Butt ");
+            base.Show();
+        }
+    }
+
+    class SightingTelescopeX6 : Finery
+    {
+        public override void Show()
+        {
+            Debug.Log("SightingTelescopeX6 ");
+            base.Show();
+        }
+    }
+    
+    public void SetTargetBreakerItem()
+    {
+        Debug.Log("  SetTargetBreakerItem ");
+        if (CheckCompleteLevel(true))
+        {
+            return;
+        }
+        switch (level)
+        {
+            case PlayUI.item1UnlockLevel:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+                        GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
+                        cm.transform.localScale = new Vector3(125f, 120f, 0);
+                        cm.transform.position = menuItemBtn[0].transform.position;
+                        cm.GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Dialog";
+                        arrow.SetActive(true);
+                        arrow.transform.localPosition = new Vector3(-277f, 37f, 0);
+                        arrow.transform.Rotate(0, 0, 45f);
+                        arrow.transform.localScale = Vector3.one * 0.8f;
+                        UpDownMove(arrow);
+                        break;
+                    case 2:
+                        Lock();
+                        playRBtnMask.SetActive(true);
+                        arrow.SetActive(true);
+                        arrow.transform.position = playRBtnMask.transform.position;
+                        arrow.transform.localPosition += Vector3.up * 120f;
+                        UpDownMove(arrow);
+                        SaveCompleteLevel(true);
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case PlayUI.item2UnlockLevel:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+                        GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
+                        cm.transform.localScale = new Vector3(125f, 120f, 0);
+                        cm.transform.position = menuItemBtn[1].transform.position;
+                        cm.GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Dialog";
+                        arrow.SetActive(true);
+                        arrow.transform.position = cm.transform.position;
+                        arrow.transform.localPosition += new Vector3(0, 130f, 0);
+                        arrow.transform.localScale = Vector3.one * 0.8f;
+                        UpDownMove(arrow);
+                        break;
+                    case 2:
+                        Lock();
+                        playRBtnMask.SetActive(true);
+                        arrow.SetActive(true);
+                        arrow.transform.position = playRBtnMask.transform.position;
+                        arrow.transform.localPosition += Vector3.up * 120f;
+                        UpDownMove(arrow);
+                        SaveCompleteLevel(true);
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case PlayUI.item3UnlockLevel:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+                        GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
+                        cm.transform.localScale = new Vector3(125f, 120f, 0);
+                        cm.transform.position = menuItemBtn[2].transform.position;
+                        cm.GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Dialog";
+                        arrow.SetActive(true);
+                        arrow.transform.position = cm.transform.position;
+                        arrow.transform.localPosition = new Vector3(277f, 37f, 0);
+                        arrow.transform.Rotate(0, 0, -45f);
+                        arrow.transform.localScale = Vector3.one * 0.8f;
+                        UpDownMove(arrow);
+                        break;
+                    case 2:
+                        Lock();
+                        playRBtnMask.SetActive(true);
+                        arrow.SetActive(true);
+                        arrow.transform.position = playRBtnMask.transform.position;
+                        arrow.transform.localPosition += Vector3.up * 120f;
+                        UpDownMove(arrow);
+                        SaveCompleteLevel(true);
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void NextZhiYin(bool isBreakerItem = false)
+    {
+        ZhiYinProcess++;
+        LeanTween.cancel(handImg);
+        if (isBreakerItem)
+        {
+            SetTargetBreakerItem();
+        }
+        else
+        {
+            SetTarget();
+        }
+    }
+
+    public void OnClickZhiyinTalk()
+    {
+        if (isClickZhiyinTalk)
+        {
+            isClickZhiyinTalk = false;
+            Unlock();
+            NextZhiYin();
+        }
+    }
+
+    public void UpDownMove(GameObject g)
+    {
+        LeanTween.cancel(g);
+        LeanTween.moveLocalY(g, g.transform.localPosition.y + 20f, 2.8f).setLoopPingPong();
+        LeanTween.scale(g, g.transform.localScale * 0.97f, 1.5f).setLoopPingPong();
+    }
+
+
+    public void ShowZhiyinTalk(Vector3 localPosition = default(Vector3), Vector3 localScale = default(Vector3), int alignment = 5)
+    {
+        zhiyinTalk.gameObject.SetActive(true);
+        zhiyinTalk.juQing.text = DataManager.GetZhiyin(level, ZhiYinProcess)[3];
+        if (localPosition == default(Vector3))
+        {
+            zhiyinTalk.transform.localPosition = Vector3.zero;
+        }
+        else
+        {
+            zhiyinTalk.transform.localPosition = localPosition;
+        }
+        if (localScale == default(Vector3))
+        {
+            zhiyinTalk.transform.localScale = Vector3.one;
+        }
+        else
+        {
+            zhiyinTalk.transform.localScale = localScale;
+        }
+        float offsetY = 0;
+        zhiyinTalk.transform.localPosition += new Vector3(0, offsetY, 0);
+        zhiyinTalk.OnEnableMove(alignment);
+    }
+
+    int[] tempPA;
+    public Tile tempMonsterTile;
+    Tile tempMouseTile;
+    Vector3 targetV;
+    public void SetTarget()
+    {
+        if (CheckCompleteLevel())
+        {
+            return;
+        }
+        switch (level)
+        {
+            case 1:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+                        ShowZhiyinTalk(Vector3.up * -200f);
+                        tempPA = new int[] { 5, 5, 5, 4, 5, 3, 6, 4 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 5, 4, 6, 4 };
+                        SetLayer(tempPA);
+                        HandMove(6, 4, 2);
+                        break;
+                    case 2:
+                        Lock();
+                        rectMask.SetActive(true);
+                        arrow.SetActive(true);
+                        arrow.transform.position = arrowP.transform.position;
+                        UpDownMove(arrow);
+                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
+                        isClickZhiyinTalk = true;
+                        tempPA = new int[] { };
+                        SetLayer(tempPA);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case 2:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+                        ShowZhiyinTalk(Vector3.up * -150f);
+                        tempPA = new int[] { 3, 7, 3, 6, 3, 5, 3, 4, 2, 6 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 3, 6, 2, 6 };
+                        SetLayer(tempPA);
+                        HandMove(2, 6, 1);
+                        break;
+                    case 2:
+                        Lock();
+                        ShowZhiyinTalk(Vector3.up * 230f);
+                        tempPA = new int[] { 3, 4, 3, 3 };
+                        ShowMask(tempPA);
+                        SetLayer(tempPA);
+                        HandMove(3, 4, 3);
+                        break;
+                    case 3:
+                        Lock();
+                        ShowZhiyinTalk(Vector3.left * 80f + Vector3.up * 80f);
+                        tempPA = new int[] { 5, 1, 6, 1, 7, 1, 8, 1, 7, 2 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 7, 1, 7, 2 };
+                        SetLayer(tempPA);
+                        HandMove(7, 2, 3);
+                        break;
+                    case 4:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(50f, 30f, 0));
+                        tempPA = new int[] { 7, 1 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 7, 1 };
+                        SetLayer(tempPA);
+                        HandMove(7, 1, 5);
+                        break;
+                    case 5:
+                        Lock();
+                        rectMask.SetActive(true);
+                        arrow.SetActive(true);
+                        arrow.transform.position = arrowP.transform.position;
+                        arrow.transform.localPosition -= Vector3.up * 40f;
+                        arrow.transform.localScale = Vector3.one * 0.8f;
+                        UpDownMove(arrow);
+                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
+                        isClickZhiyinTalk = true;
+                        tempPA = new int[] { };
+                        SetLayer(tempPA);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case 3:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(-110f, -133f, 0));
+                        tempPA = new int[] { 2, 7, 3, 7, 2, 6, 3, 6, 3, 5 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 3, 6, 3, 5 };
+                        SetLayer(tempPA);
+                        HandMove(3, 5, 4);
+                        break;
+                    case 2:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(-122f, -150f, 0));
+                        tempPA = new int[] { 3, 6, 3, 5 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 3, 6, 3, 5 };
+                        SetLayer(tempPA);
+                        HandMove(3, 6, 3);
+                        break;
+                    case 3:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(-93f, 105f, 0));
+                        tempPA = new int[] { 2, 2, 3, 2, 4, 2, 3, 3, 4, 3 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 2, 2, 3, 2 };
+                        SetLayer(tempPA);
+                        HandMove(2, 2, 1);
+                        break;
+                    case 4:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(-94f, 44f, 0));
+                        tempPA = new int[] { 3, 2 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 3, 2 };
+                        SetLayer(tempPA);
+                        HandMove(3, 2, 5);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case 4:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(-139f, 172f, 0f));
+                        tempPA = new int[] { 0, 3, 1, 3, 2, 3, 3, 3, 1, 2, 1, 1 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 0, 3, 1, 3 };
+                        SetLayer(tempPA);
+                        HandMove(0, 3, 1);
+                        break;
+                    case 2:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(-160f, 100f, 0f));
+                        tempPA = new int[] { 1, 2, 1, 1 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 1, 2, 1, 1 };
+                        SetLayer(tempPA);
+                        HandMove(1, 2, 3);
+                        break;
+                    case 3:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(150f, 233f, 0f));
+                        tempPA = new int[] { 8, 3, 9, 3, 10, 3, 9, 4, 9, 2, 9, 1 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 9, 4, 9, 3 };
+                        SetLayer(tempPA);
+                        HandMove(9, 4, 3);
+                        break;
+                    case 4:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(191f, 107f, 0f));
+                        tempPA = new int[] { 9, 2 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 9, 2 };
+                        SetLayer(tempPA);
+                        HandMove(9, 2, 5);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case 5:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(0f, -170f, 0f));
+                        tempPA = new int[] { 4, 4, 5, 4, 6, 4, 7, 4, 8, 4, 6, 5 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 6, 5, 6, 4 };
+                        SetLayer(tempPA);
+                        HandMove(6, 5, 3);
+                        break;
+                    case 2:
+                        Lock();
+                        ShowZhiyinTalk(new Vector3(0f, -170f, 0f));
+                        tempPA = new int[] { 6, 5, 6, 4 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 6, 5, 6, 4 };
+                        SetLayer(tempPA);
+                        HandMove(6, 4, 4);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+
+            case 6:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+                        ShowZhiyinTalk(Vector3.zero - Vector3.up * 200f);
+                        tempPA = new int[] { 5, 4, 6, 4 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 5, 4, 6, 4 };
+                        SetLayer(tempPA);
+                        HandMove(5, 4, 1);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+
+            case 7:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+                        ShowZhiyinTalk(Vector3.zero - Vector3.up * 200f);
+
+                        tempPA = new int[] { 2, 6, 3, 6, 3, 5, 3, 4, 4, 4, 3, 3 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 2, 6, 3, 6 };
+                        SetLayer(tempPA);
+
+                        HandMove(2, 6, 1);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+
+            case 8:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+                        //ShowZhiyinTalk();
+                        numMoveMask.SetActive(true);
+                        isClickZhiyinTalk = true;
+                        arrow.SetActive(true);
+                        arrow.transform.position = arrowP.transform.position;
+                        arrow.transform.localPosition += Vector3.up * 30f;
+                        UpDownMove(arrow);
+                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
+                        tempPA = new int[] { };
+                        SetLayer(tempPA);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case 9:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+
+                        GameObject cm = Instantiate(circleMask, popupMaskRoot.transform);
+                        cm.transform.position = popupItemBtn[0].transform.position;
+                        cm.transform.localScale *= 1.3f;
+
+                        arrow.SetActive(true);
+                        arrow.transform.position = cm.transform.position;
+                        arrow.transform.localPosition += Vector3.up * 130f;
+                        UpDownMove(arrow);
+
+                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x - (bgBottomBG.GetComponent<RectTransform>().rect.width * 0.5f * bgBottomBG.transform.localScale.x + 80f), 120f, 0), Vector3.one, 2);
+                        tempPA = new int[] { };
+                        SetLayer(tempPA);
+
+                        break;
+
+                    case 2:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(68f, 150f, 0f));
+                        tempPA = new int[] { 7, 3 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 7, 3 };
+                        SetLayer(tempPA);
+
+                        HandMove(7, 3, 5);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case 10:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(-17f, 224f, 0f));
+                        tempPA = new int[] { 2, 4, 4, 4, 2, 3, 3, 3, 4, 3, 5, 3 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 2, 4, 2, 3 };
+                        SetLayer(tempPA);
+
+                        HandMove(2, 4, 3);
+                        break;
+                    case 2:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(-42f, 224f, 0f));
+                        tempPA = new int[] { 2, 2, 4, 4, 2, 3, 3, 3, 4, 3, 5, 3 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 2, 2, 2, 3 };
+                        SetLayer(tempPA);
+
+                        HandMove(2, 2, 4);
+                        break;
+                    case 3:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(-72f, 224f, 0f));
+                        tempPA = new int[] { 2, 2, 4, 4, 2, 3, 3, 3, 4, 3, 5, 3 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 2, 2, 2, 3 };
+                        SetLayer(tempPA);
+
+                        HandMove(2, 2, 4);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+
+            //case 13:
+            //    switch (ZhiYinProcess)
+            //    {
+            //        case 1:
+            //            Lock();
+
+            //            ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+            //            GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
+            //            cm.transform.localScale =  new Vector3(125f,120f,0) ;
+            //            cm.transform.position = menuItemBtn[0].transform.position;
+            //            cm.GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Dialog";
+
+            //            arrow.SetActive(true);
+            //            //arrow.transform.position = cm.transform.position;
+            //            arrow.transform.localPosition = new Vector3(-277f,37f,0);
+            //            arrow.transform.Rotate(0, 0, 45f);
+            //            arrow.transform.localScale = Vector3.one * 0.8f;
+            //            UpDownMove(arrow);
+            //            break;
+            //        case 2:
+            //            Lock();
+            //            playRBtnMask.SetActive(true);
+            //            arrow.SetActive(true);
+            //            arrow.transform.position = playRBtnMask.transform.position;
+            //            arrow.transform.localPosition += Vector3.up * 120f;
+            //            UpDownMove(arrow);
+            //            SaveCompleteLevel();
+            //            break;
+            //        default:
+            //            Unlock();
+            //            break;
+            //    }
+            //    break;
+
+            case 14:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(12f, -170f, 0f));
+                        tempPA = new int[] { 4, 4, 5, 4, 6, 4, 5, 5 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 5, 4, 5, 5 };
+                        SetLayer(tempPA);
+
+                        HandMove(5, 5, 3);
+                        break;
+
+                    case 2:
+                        Lock();
+                        //ShowZhiyinTalk();
+                        rectMask.SetActive(true);
+                        arrow.SetActive(true);
+                        arrow.transform.position = arrowP.transform.position;
+                        arrow.transform.localPosition += Vector3.down * 30f;
+                        UpDownMove(arrow);
+                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
+                        isClickZhiyinTalk = true;
+
+                        tempPA = new int[] { };
+                        SetLayer(tempPA);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            //case 16:
+            //    switch (ZhiYinProcess)
+            //    {
+            //        case 1:
+            //            Lock();
+
+            //            ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+            //            GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
+            //            cm.transform.localScale = new Vector3(125f, 120f, 0);
+            //            cm.transform.position = menuItemBtn[1].transform.position;
+            //            cm.GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Dialog";
+            //            arrow.SetActive(true);
+            //            arrow.transform.position = cm.transform.position;
+            //            arrow.transform.localPosition += new Vector3(0 , 130f, 0);
+            //            arrow.transform.localScale = Vector3.one * 0.8f;
+            //            UpDownMove(arrow);
+            //            break;
+            //        case 2:
+            //            Lock();
+            //            playRBtnMask.SetActive(true);
+            //            arrow.SetActive(true);
+            //            arrow.transform.position = playRBtnMask.transform.position;
+            //            arrow.transform.localPosition += Vector3.up * 120f;
+            //            UpDownMove(arrow);
+            //            SaveCompleteLevel();
+            //            break;
+            //        default:
+            //            Unlock();
+            //            break;
+            //    }
+            //    break;
+
+            //case 18:
+            //    switch (ZhiYinProcess)
+            //    {
+            //        case 1:
+            //            Lock();
+
+            //            ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+            //            GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
+            //            cm.transform.localScale = new Vector3(125f, 120f, 0);
+            //            cm.transform.position = menuItemBtn[2].transform.position;
+            //            cm.GetComponentInChildren<SpriteRenderer>().sortingLayerName = "Dialog";
+            //            arrow.SetActive(true);
+            //            arrow.transform.position = cm.transform.position;
+
+            //            arrow.transform.localPosition = new Vector3(277f, 37f, 0);
+            //            arrow.transform.Rotate(0, 0, -45f);
+            //            arrow.transform.localScale = Vector3.one * 0.8f;
+            //            UpDownMove(arrow);
+            //            break;
+            //        case 2:
+            //            Lock();
+            //            playRBtnMask.SetActive(true);
+            //            arrow.SetActive(true);
+            //            arrow.transform.position = playRBtnMask.transform.position;
+            //            arrow.transform.localPosition += Vector3.up * 120f;
+            //            UpDownMove(arrow);
+            //            SaveCompleteLevel();
+            //            break;
+            //        default:
+            //            Unlock();
+            //            break;
+            //    }
+            //    break;
+            case 19:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(-83f, -131f, 0f));
+                        tempPA = new int[] { 2, 8, 3, 8, 4, 8, 3, 7, 4, 7, 3, 6, 3, 5 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 2, 8, 3, 8 };
+                        SetLayer(tempPA);
+
+                        HandMove(2, 8, 1);
+
+                        //tempMonsterGrid = Global.gridArray[3, 5];
+                        tempMonsterTile = Global.gridArray[3, 5].GetTile();
+                        break;
+
+                    case 2:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(-83f, -161f, 0f));
+                        //Grid[] gridA = new Grid[] {
+                        //    Global.gridArray[2, 5]
+                        //    , Global.gridArray[4, 5]
+                        //    , Global.gridArray[3, 6]
+                        //    , Global.gridArray[3, 4]};
+                        //for (int i = 0; i < gridA.Length; i++)
+                        //{
+                        //    if(gridA[i].GetTile().tileData.tileType == TileData.TileType.monster){
+                        //        tempMonsterGrid = gridA[i];
+                        // tempMonsterTile = gridA[i].GetTile();
+                        tempPA = new int[] { tempMonsterTile.grid.gridPosition.Column, tempMonsterTile.grid.gridPosition.Row };
+                        //    }
+                        //}
+                        ShowMask(tempPA);
+                        tempPA = new int[] { };
+                        SetLayer(tempPA);
+                        isClickZhiyinTalk = true;
+
+                        break;
+                    case 3:
+
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(-68f, -161f, 0f));
+                        tempPA = new int[] { tempMonsterTile.grid.gridPosition.Column, tempMonsterTile.grid.gridPosition.Row, 3, 5, };
+
+                        ShowMask(tempPA);
+                        SetLayer(tempPA);
+
+                        int x = tempMonsterTile.grid.gridPosition.Column - 3;
+                        int y = tempMonsterTile.grid.gridPosition.Row - 5;
+                        if (x > 0)
+                        {
+                            HandMove(3, 5, 1);
+                        }
+                        else if (x < 0)
+                        {
+                            HandMove(3, 5, 2);
+                        }
+                        else if (y < 0)
+                        {
+                            HandMove(3, 5, 3);
+                        }
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+
+            case 25:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(38f, -180f, 0f));
+                        tempPA = new int[] { 3, 5, 4, 5, 5, 5, 6, 5, 7, 5, 4, 4, 5, 4, 6, 4 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 5, 5, 5, 4 };
+                        SetLayer(tempPA);
+
+                        HandMove(5, 4, 4);
+                        break;
+
+                    case 2:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(-49f, -200f, 0f));
+                        tempPA = new int[] { 2, 6, 3, 6, 2, 5, 3, 5, 2, 4, 3, 4, 4, 4, 3, 3 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 3, 4, 4, 4 };
+                        SetLayer(tempPA);
+
+                        HandMove(4, 4, 2);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case 27:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+                        GameObject cm = Instantiate(circleMask, popupMaskRoot.transform);
+                        cm.transform.position = popupItemBtn[1].transform.position;
+                        cm.transform.localScale *= 1.3f;
+                        arrow.SetActive(true);
+                        arrow.transform.position = cm.transform.position;
+                        arrow.transform.localPosition += Vector3.up * 130f;
+                        UpDownMove(arrow);
+                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x - (bgBottomBG.GetComponent<RectTransform>().rect.width * 0.5f * bgBottomBG.transform.localScale.x + 80f), 0, 0), Vector3.one, 2);
+                        tempPA = new int[] { };
+                        SetLayer(tempPA);
+                        break;
+                    case 2:
+                        Lock();
+
+                        ShowZhiyinTalk(Vector3.zero - Vector3.up * 200f);
+                        tempPA = new int[] { 5, 5 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 5, 5 };
+                        SetLayer(tempPA);
+
+                        HandMove(5, 5, 5);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case 33:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(-56f, -59f, 0f));
+                        tempPA = new int[] { 4, 7, 3, 6, 4, 6, 5, 6, 4, 5 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 4, 7, 4, 6 };
+                        SetLayer(tempPA);
+                        tempMouseTile = Global.gridArray[4, 5].GetTile();
+
+                        HandMove(4, 7, 3);
+                        break;
+
+                    case 2:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(107f, -97f, 0f));
+                  
+                        tempPA = new int[] { tempMouseTile.grid.gridPosition.Column, tempMouseTile.grid.gridPosition.Row };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { };
+                        SetLayer(tempPA);
+
+                        isClickZhiyinTalk = true;
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case 36:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+
+                        GameObject cm = Instantiate(circleMask, popupMaskRoot.transform);
+                        cm.transform.position = popupItemBtn[2].transform.position;
+                        cm.transform.localScale *= 1.3f;
+                        arrow.SetActive(true);
+                        arrow.transform.position = cm.transform.position;
+                        arrow.transform.localPosition += Vector3.up * 130f;
+                        UpDownMove(arrow);
+                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x - (bgBottomBG.GetComponent<RectTransform>().rect.width * 0.5f * bgBottomBG.transform.localScale.x + 80f), -100f, 0), Vector3.one, 2);
+                        tempPA = new int[] { };
+                        SetLayer(tempPA);
+                        break;
+                    case 2:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(1f, 82f, 0f));
+                        tempPA = new int[] { 6, 8 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 6, 8 };
+                        SetLayer(tempPA);
+
+                        HandMove(6, 8, 5);
+                        break;
+                    case 3:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(1f, 36f, 0f));
+                        tempPA = new int[] { 6, 7 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 6, 7 };
+                        SetLayer(tempPA);
+
+                        HandMove(6, 7, 5);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case 40:
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+
+                        ShowZhiyinTalk(new Vector3(1f, -101f, 0f));
+                        tempPA = new int[] { 5, 7, 5, 6, 5, 5, 6, 6 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 6, 6, 5, 6 };
+                        SetLayer(tempPA);
+
+                        HandMove(6, 6, 2);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            case 52:
+
+                ///////////////////////////////////////////////////////
+                switch (ZhiYinProcess)
+                {
+                    case 1:
+                        Lock();
+
+                        ShowZhiyinTalk(Vector3.zero - Vector3.up * 250f, Vector3.one * 0.8f);
+                        tempPA = new int[] {0,3,1,3,2,3,3,3,4,3,6,5,7,5,8,5,9,5,10,5,
+                                            0,2,1,2,2,2,3,2,4,2,6,6,7,6,8,6,9,6,10,6};
+                        ShowMask(tempPA);
+                        tempPA = new int[] { };
+                        SetLayer(tempPA);
+                        isClickZhiyinTalk = true;
+                        break;
+                    case 2:
+                        Lock();
+                        tempPA = new int[] { 6, 3, 7, 3, 8, 3, 6, 2 };
+                        ShowMask(tempPA);
+                        tempPA = new int[] { 6, 3, 6, 2 };
+                        SetLayer(tempPA);
+
+                        HandMove(6, 2, 4);
+                        SaveCompleteLevel();
+                        break;
+                    default:
+                        Unlock();
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public bool IsLock
+    {
+        get
+        {
+            return isLock;
+        }
+
+        set
+        {
+            isLock = value;
+        }
+    }
+
+    public int ZhiYinProcess
+    {
+        get
+        {
+            return zhiYinProcess;
+        }
+
+        set
+        {
+            zhiYinProcess = value;
+        }
+    }
+
+    public void HandMove(int gC, int gR, int n)
+    {
+        targetV = Global.gridArray[gC, gR].transform.position;
+
+        handImg.SetActive(true);
+
+        float m = 80;
+
+        switch (n)
+        {
+            case 1:
+                {
+                    targetV.x += 0.5f;
+                    targetV.y -= 0.9f;
+                    handImg.transform.position = targetV;
+                    LeanTween.moveLocal(handImg, new Vector3(handImg.gameObject.transform.localPosition.x + m, handImg.gameObject.transform.localPosition.y, 0), 2f)
+                        .setLoopClamp();
+                }
+                break;
+            case 2:
+                {
+                    targetV.x += 0.9f;
+                    targetV.y -= 0.9f;
+                    handImg.transform.position = targetV;
+                    LeanTween.moveLocal(handImg, new Vector3(handImg.gameObject.transform.localPosition.x - m, handImg.gameObject.transform.localPosition.y, 0), 2f)
+                        .setLoopClamp();
+                }
+                break;
+            case 3:
+                {
+                    targetV.x += 0.8f;
+                    targetV.y -= 1f;
+                    handImg.transform.position = targetV;
+                    LeanTween.moveLocal(handImg, new Vector3(handImg.gameObject.transform.localPosition.x, handImg.gameObject.transform.localPosition.y - m, 0), 2f)
+                        .setLoopClamp();
+                }
+                break;
+            case 4:
+                {
+                    targetV.x += 0.8f;
+                    targetV.y -= 1f;
+                    handImg.transform.position = targetV;
+                    LeanTween.moveLocal(handImg, new Vector3(handImg.gameObject.transform.localPosition.x, handImg.gameObject.transform.localPosition.y + m, 0), 2f)
+                        .setLoopClamp();
+                }
+                break;
+            case 5:
+                {
+                    targetV.x += 0.9f;
+                    targetV.y -= 0.9f;
+                    handImg.transform.position = targetV;
+                    LeanTween.scale(handImg, Vector3.one * 1.1f, 0.5f)
+                      .setLoopPingPong();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    bool SetLayer(int[] a)
+    {
+        for (int x = 0; x < Global.gridWidth; ++x)
+        {
+            for (int y = 0; y < Global.gridHeight; ++y)
+            {
+                Grid grid = Global.gridArray[x, y];
+                bool b = false;
+                for (int i = 0; i < a.Length; i += 2)
+                {
+                    if (x == a[i] && y == a[i + 1])
+                    {
+                        b = true;
+                        break;
+                    }
+                }
+
+                if (b)
+                {
+                    grid.gameObject.layer = 15;
+                }
+                else
+                {
+                    grid.gameObject.layer = 2;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public void Lock()
+    {
+        Unlock();
+        IsLock = true;
+    }
+
+    public void Unlock()
+    {
+        if (IsLock)
+        {
+            IsLock = false;
+            if (_mapControl != null)
+            {
+                for (int i = 0; i < _mapControl.gridList.Count; i++)
+                {
+                    _mapControl.gridList[i].gameObject.layer = 15;
+                }
+            }
+            if (menuMaskRoot != null)
+            {
+                for (int i = 0; i < menuMaskRoot.transform.childCount; i++)
+                {
+                    Destroy(menuMaskRoot.transform.GetChild(i).gameObject);
+                }
+            }
+            if (popupMaskRoot != null)
+            {
+                for (int i = 0; i < popupMaskRoot.transform.childCount; i++)
+                {
+                    Destroy(popupMaskRoot.transform.GetChild(i).gameObject);
+                }
+            }
+            LeanTween.cancel(handImg);
+            LeanTween.cancel(arrow);
+            handImg.SetActive(false);
+            zhiyinTalk.gameObject.SetActive(false);
+            zhiyinTalk.transform.localScale = Vector3.one;
+            arrow.SetActive(false);
+
+            arrow.transform.rotation = Quaternion.identity;
+            arrow.transform.localScale = Vector3.one;
+            if (rectMask != null)
+            {
+                rectMask.SetActive(false);
+            }
+            if (numMoveMask != null)
+            {
+                numMoveMask.SetActive(false);
+            }
+            isClickZhiyinTalk = false;
+            if (Global.gameUI.activeSelf)
+            {
+                GamePlayController.gamePlayController.GetComponent<GamePlayController>().ShowHelp();
+            }
+        }
+    }
+
+
+}
