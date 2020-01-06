@@ -1,0 +1,22 @@
+    public string GetReverseString(string inputString) {
+        inputString = inputString.Replace(".", " .");
+        inputString = inputString.Replace(",", " ,");
+        string[] sArr =  inputString.Split(' ');
+        int p = 0;
+        string tempS = "";
+        for (int i = 0; i < sArr.Length; i++)
+        {
+            if (sArr[i].Equals(".") || sArr[i].Equals(",")) {
+                for (int j = 0; j < (i - p)/2; j++) {
+                    tempS = sArr[j + p];
+                    sArr[j + p] = sArr[i - j-1];
+                    sArr[i - j-1] = tempS;
+                }
+                p = i+1;
+            }
+        }
+        inputString = string.Join(" ", sArr);
+        inputString = inputString.Replace(" .", ".");
+        inputString = inputString.Replace(" ,", ",");
+        return inputString;
+    }
