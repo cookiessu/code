@@ -240,12 +240,12 @@ public class SomeCode : MonoBehaviour {
         switch (level)
         {
             case PlayUI.item1UnlockLevel:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+                        ShowTalkGuide(new Vector3(-18f, -239f, 0f));
                         GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
                         cm.transform.localScale = new Vector3(125f, 120f, 0);
                         cm.transform.position = menuItemBtn[0].transform.position;
@@ -271,11 +271,11 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case PlayUI.item2UnlockLevel:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+                        ShowTalkGuide(new Vector3(-18f, -239f, 0f));
                         GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
                         cm.transform.localScale = new Vector3(125f, 120f, 0);
                         cm.transform.position = menuItemBtn[1].transform.position;
@@ -301,12 +301,12 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case PlayUI.item3UnlockLevel:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+                        ShowTalkGuide(new Vector3(-18f, -239f, 0f));
                         GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
                         cm.transform.localScale = new Vector3(125f, 120f, 0);
                         cm.transform.position = menuItemBtn[2].transform.position;
@@ -337,9 +337,9 @@ public class SomeCode : MonoBehaviour {
         }
     }
 
-    public void NextZhiYin(bool isBreakerItem = false)
+    public void NextGuide(bool isBreakerItem = false)
     {
-        ZhiYinProcess++;
+        GuideProcess++;
         LeanTween.cancel(handImg);
         if (isBreakerItem)
         {
@@ -351,13 +351,13 @@ public class SomeCode : MonoBehaviour {
         }
     }
 
-    public void OnClickZhiyinTalk()
+    public void OnClickTalkGuide()
     {
-        if (isClickZhiyinTalk)
+        if (isClickTalkGuide)
         {
-            isClickZhiyinTalk = false;
+            isClickTalkGuide = false;
             Unlock();
-            NextZhiYin();
+            NextGuide();
         }
     }
 
@@ -369,29 +369,29 @@ public class SomeCode : MonoBehaviour {
     }
 
 
-    public void ShowZhiyinTalk(Vector3 localPosition = default(Vector3), Vector3 localScale = default(Vector3), int alignment = 5)
+    public void ShowTalkGuide(Vector3 localPosition = default(Vector3), Vector3 localScale = default(Vector3), int alignment = 5)
     {
-        zhiyinTalk.gameObject.SetActive(true);
-        zhiyinTalk.juQing.text = DataManager.GetZhiyin(level, ZhiYinProcess)[3];
+        TalkGuide.gameObject.SetActive(true);
+        TalkGuide.juQing.text = DataManager.GetGuide(level, GuideProcess)[3];
         if (localPosition == default(Vector3))
         {
-            zhiyinTalk.transform.localPosition = Vector3.zero;
+            TalkGuide.transform.localPosition = Vector3.zero;
         }
         else
         {
-            zhiyinTalk.transform.localPosition = localPosition;
+            TalkGuide.transform.localPosition = localPosition;
         }
         if (localScale == default(Vector3))
         {
-            zhiyinTalk.transform.localScale = Vector3.one;
+            TalkGuide.transform.localScale = Vector3.one;
         }
         else
         {
-            zhiyinTalk.transform.localScale = localScale;
+            TalkGuide.transform.localScale = localScale;
         }
         float offsetY = 0;
-        zhiyinTalk.transform.localPosition += new Vector3(0, offsetY, 0);
-        zhiyinTalk.OnEnableMove(alignment);
+        TalkGuide.transform.localPosition += new Vector3(0, offsetY, 0);
+        TalkGuide.OnEnableMove(alignment);
     }
 
     int[] tempPA;
@@ -407,11 +407,11 @@ public class SomeCode : MonoBehaviour {
         switch (level)
         {
             case 1:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
-                        ShowZhiyinTalk(Vector3.up * -200f);
+                        ShowTalkGuide(Vector3.up * -200f);
                         tempPA = new int[] { 5, 5, 5, 4, 5, 3, 6, 4 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 5, 4, 6, 4 };
@@ -424,8 +424,8 @@ public class SomeCode : MonoBehaviour {
                         arrow.SetActive(true);
                         arrow.transform.position = arrowP.transform.position;
                         UpDownMove(arrow);
-                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
-                        isClickZhiyinTalk = true;
+                        ShowTalkGuide(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
+                        isClickTalkGuide = true;
                         tempPA = new int[] { };
                         SetLayer(tempPA);
                         SaveCompleteLevel();
@@ -436,11 +436,11 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case 2:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
-                        ShowZhiyinTalk(Vector3.up * -150f);
+                        ShowTalkGuide(Vector3.up * -150f);
                         tempPA = new int[] { 3, 7, 3, 6, 3, 5, 3, 4, 2, 6 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 3, 6, 2, 6 };
@@ -449,7 +449,7 @@ public class SomeCode : MonoBehaviour {
                         break;
                     case 2:
                         Lock();
-                        ShowZhiyinTalk(Vector3.up * 230f);
+                        ShowTalkGuide(Vector3.up * 230f);
                         tempPA = new int[] { 3, 4, 3, 3 };
                         ShowMask(tempPA);
                         SetLayer(tempPA);
@@ -457,7 +457,7 @@ public class SomeCode : MonoBehaviour {
                         break;
                     case 3:
                         Lock();
-                        ShowZhiyinTalk(Vector3.left * 80f + Vector3.up * 80f);
+                        ShowTalkGuide(Vector3.left * 80f + Vector3.up * 80f);
                         tempPA = new int[] { 5, 1, 6, 1, 7, 1, 8, 1, 7, 2 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 7, 1, 7, 2 };
@@ -466,7 +466,7 @@ public class SomeCode : MonoBehaviour {
                         break;
                     case 4:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(50f, 30f, 0));
+                        ShowTalkGuide(new Vector3(50f, 30f, 0));
                         tempPA = new int[] { 7, 1 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 7, 1 };
@@ -481,8 +481,8 @@ public class SomeCode : MonoBehaviour {
                         arrow.transform.localPosition -= Vector3.up * 40f;
                         arrow.transform.localScale = Vector3.one * 0.8f;
                         UpDownMove(arrow);
-                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
-                        isClickZhiyinTalk = true;
+                        ShowTalkGuide(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
+                        isClickTalkGuide = true;
                         tempPA = new int[] { };
                         SetLayer(tempPA);
                         SaveCompleteLevel();
@@ -493,11 +493,11 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case 3:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(-110f, -133f, 0));
+                        ShowTalkGuide(new Vector3(-110f, -133f, 0));
                         tempPA = new int[] { 2, 7, 3, 7, 2, 6, 3, 6, 3, 5 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 3, 6, 3, 5 };
@@ -506,7 +506,7 @@ public class SomeCode : MonoBehaviour {
                         break;
                     case 2:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(-122f, -150f, 0));
+                        ShowTalkGuide(new Vector3(-122f, -150f, 0));
                         tempPA = new int[] { 3, 6, 3, 5 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 3, 6, 3, 5 };
@@ -515,7 +515,7 @@ public class SomeCode : MonoBehaviour {
                         break;
                     case 3:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(-93f, 105f, 0));
+                        ShowTalkGuide(new Vector3(-93f, 105f, 0));
                         tempPA = new int[] { 2, 2, 3, 2, 4, 2, 3, 3, 4, 3 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 2, 2, 3, 2 };
@@ -524,7 +524,7 @@ public class SomeCode : MonoBehaviour {
                         break;
                     case 4:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(-94f, 44f, 0));
+                        ShowTalkGuide(new Vector3(-94f, 44f, 0));
                         tempPA = new int[] { 3, 2 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 3, 2 };
@@ -538,11 +538,11 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case 4:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(-139f, 172f, 0f));
+                        ShowTalkGuide(new Vector3(-139f, 172f, 0f));
                         tempPA = new int[] { 0, 3, 1, 3, 2, 3, 3, 3, 1, 2, 1, 1 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 0, 3, 1, 3 };
@@ -551,7 +551,7 @@ public class SomeCode : MonoBehaviour {
                         break;
                     case 2:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(-160f, 100f, 0f));
+                        ShowTalkGuide(new Vector3(-160f, 100f, 0f));
                         tempPA = new int[] { 1, 2, 1, 1 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 1, 2, 1, 1 };
@@ -560,7 +560,7 @@ public class SomeCode : MonoBehaviour {
                         break;
                     case 3:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(150f, 233f, 0f));
+                        ShowTalkGuide(new Vector3(150f, 233f, 0f));
                         tempPA = new int[] { 8, 3, 9, 3, 10, 3, 9, 4, 9, 2, 9, 1 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 9, 4, 9, 3 };
@@ -569,7 +569,7 @@ public class SomeCode : MonoBehaviour {
                         break;
                     case 4:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(191f, 107f, 0f));
+                        ShowTalkGuide(new Vector3(191f, 107f, 0f));
                         tempPA = new int[] { 9, 2 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 9, 2 };
@@ -583,11 +583,11 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case 5:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(0f, -170f, 0f));
+                        ShowTalkGuide(new Vector3(0f, -170f, 0f));
                         tempPA = new int[] { 4, 4, 5, 4, 6, 4, 7, 4, 8, 4, 6, 5 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 6, 5, 6, 4 };
@@ -596,7 +596,7 @@ public class SomeCode : MonoBehaviour {
                         break;
                     case 2:
                         Lock();
-                        ShowZhiyinTalk(new Vector3(0f, -170f, 0f));
+                        ShowTalkGuide(new Vector3(0f, -170f, 0f));
                         tempPA = new int[] { 6, 5, 6, 4 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 6, 5, 6, 4 };
@@ -611,11 +611,11 @@ public class SomeCode : MonoBehaviour {
                 break;
 
             case 6:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
-                        ShowZhiyinTalk(Vector3.zero - Vector3.up * 200f);
+                        ShowTalkGuide(Vector3.zero - Vector3.up * 200f);
                         tempPA = new int[] { 5, 4, 6, 4 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 5, 4, 6, 4 };
@@ -630,11 +630,11 @@ public class SomeCode : MonoBehaviour {
                 break;
 
             case 7:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
-                        ShowZhiyinTalk(Vector3.zero - Vector3.up * 200f);
+                        ShowTalkGuide(Vector3.zero - Vector3.up * 200f);
 
                         tempPA = new int[] { 2, 6, 3, 6, 3, 5, 3, 4, 4, 4, 3, 3 };
                         ShowMask(tempPA);
@@ -651,18 +651,18 @@ public class SomeCode : MonoBehaviour {
                 break;
 
             case 8:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
-                        //ShowZhiyinTalk();
+                        //ShowTalkGuide();
                         numMoveMask.SetActive(true);
-                        isClickZhiyinTalk = true;
+                        isClickTalkGuide = true;
                         arrow.SetActive(true);
                         arrow.transform.position = arrowP.transform.position;
                         arrow.transform.localPosition += Vector3.up * 30f;
                         UpDownMove(arrow);
-                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
+                        ShowTalkGuide(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
                         tempPA = new int[] { };
                         SetLayer(tempPA);
                         SaveCompleteLevel();
@@ -673,7 +673,7 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case 9:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
@@ -687,7 +687,7 @@ public class SomeCode : MonoBehaviour {
                         arrow.transform.localPosition += Vector3.up * 130f;
                         UpDownMove(arrow);
 
-                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x - (bgBottomBG.GetComponent<RectTransform>().rect.width * 0.5f * bgBottomBG.transform.localScale.x + 80f), 120f, 0), Vector3.one, 2);
+                        ShowTalkGuide(new Vector3(arrow.transform.localPosition.x - (bgBottomBG.GetComponent<RectTransform>().rect.width * 0.5f * bgBottomBG.transform.localScale.x + 80f), 120f, 0), Vector3.one, 2);
                         tempPA = new int[] { };
                         SetLayer(tempPA);
 
@@ -696,7 +696,7 @@ public class SomeCode : MonoBehaviour {
                     case 2:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(68f, 150f, 0f));
+                        ShowTalkGuide(new Vector3(68f, 150f, 0f));
                         tempPA = new int[] { 7, 3 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 7, 3 };
@@ -711,12 +711,12 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case 10:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(-17f, 224f, 0f));
+                        ShowTalkGuide(new Vector3(-17f, 224f, 0f));
                         tempPA = new int[] { 2, 4, 4, 4, 2, 3, 3, 3, 4, 3, 5, 3 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 2, 4, 2, 3 };
@@ -727,7 +727,7 @@ public class SomeCode : MonoBehaviour {
                     case 2:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(-42f, 224f, 0f));
+                        ShowTalkGuide(new Vector3(-42f, 224f, 0f));
                         tempPA = new int[] { 2, 2, 4, 4, 2, 3, 3, 3, 4, 3, 5, 3 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 2, 2, 2, 3 };
@@ -738,7 +738,7 @@ public class SomeCode : MonoBehaviour {
                     case 3:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(-72f, 224f, 0f));
+                        ShowTalkGuide(new Vector3(-72f, 224f, 0f));
                         tempPA = new int[] { 2, 2, 4, 4, 2, 3, 3, 3, 4, 3, 5, 3 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 2, 2, 2, 3 };
@@ -754,12 +754,12 @@ public class SomeCode : MonoBehaviour {
                 break;
 
             //case 13:
-            //    switch (ZhiYinProcess)
+            //    switch (GuideProcess)
             //    {
             //        case 1:
             //            Lock();
 
-            //            ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+            //            ShowTalkGuide(new Vector3(-18f, -239f, 0f));
             //            GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
             //            cm.transform.localScale =  new Vector3(125f,120f,0) ;
             //            cm.transform.position = menuItemBtn[0].transform.position;
@@ -788,12 +788,12 @@ public class SomeCode : MonoBehaviour {
             //    break;
 
             case 14:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(12f, -170f, 0f));
+                        ShowTalkGuide(new Vector3(12f, -170f, 0f));
                         tempPA = new int[] { 4, 4, 5, 4, 6, 4, 5, 5 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 5, 4, 5, 5 };
@@ -804,14 +804,14 @@ public class SomeCode : MonoBehaviour {
 
                     case 2:
                         Lock();
-                        //ShowZhiyinTalk();
+                        //ShowTalkGuide();
                         rectMask.SetActive(true);
                         arrow.SetActive(true);
                         arrow.transform.position = arrowP.transform.position;
                         arrow.transform.localPosition += Vector3.down * 30f;
                         UpDownMove(arrow);
-                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
-                        isClickZhiyinTalk = true;
+                        ShowTalkGuide(new Vector3(arrow.transform.localPosition.x + (goal.GetComponent<RectTransform>().rect.width * 0.5f * goal.transform.localScale.x + 100f), 0, 0), Vector3.one, 1);
+                        isClickTalkGuide = true;
 
                         tempPA = new int[] { };
                         SetLayer(tempPA);
@@ -823,12 +823,12 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             //case 16:
-            //    switch (ZhiYinProcess)
+            //    switch (GuideProcess)
             //    {
             //        case 1:
             //            Lock();
 
-            //            ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+            //            ShowTalkGuide(new Vector3(-18f, -239f, 0f));
             //            GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
             //            cm.transform.localScale = new Vector3(125f, 120f, 0);
             //            cm.transform.position = menuItemBtn[1].transform.position;
@@ -855,12 +855,12 @@ public class SomeCode : MonoBehaviour {
             //    break;
 
             //case 18:
-            //    switch (ZhiYinProcess)
+            //    switch (GuideProcess)
             //    {
             //        case 1:
             //            Lock();
 
-            //            ShowZhiyinTalk(new Vector3(-18f, -239f, 0f));
+            //            ShowTalkGuide(new Vector3(-18f, -239f, 0f));
             //            GameObject cm = Instantiate(circleMask, menuMaskRoot.transform);
             //            cm.transform.localScale = new Vector3(125f, 120f, 0);
             //            cm.transform.position = menuItemBtn[2].transform.position;
@@ -888,12 +888,12 @@ public class SomeCode : MonoBehaviour {
             //    }
             //    break;
             case 19:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(-83f, -131f, 0f));
+                        ShowTalkGuide(new Vector3(-83f, -131f, 0f));
                         tempPA = new int[] { 2, 8, 3, 8, 4, 8, 3, 7, 4, 7, 3, 6, 3, 5 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 2, 8, 3, 8 };
@@ -908,7 +908,7 @@ public class SomeCode : MonoBehaviour {
                     case 2:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(-83f, -161f, 0f));
+                        ShowTalkGuide(new Vector3(-83f, -161f, 0f));
                         //Grid[] gridA = new Grid[] {
                         //    Global.gridArray[2, 5]
                         //    , Global.gridArray[4, 5]
@@ -925,14 +925,14 @@ public class SomeCode : MonoBehaviour {
                         ShowMask(tempPA);
                         tempPA = new int[] { };
                         SetLayer(tempPA);
-                        isClickZhiyinTalk = true;
+                        isClickTalkGuide = true;
 
                         break;
                     case 3:
 
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(-68f, -161f, 0f));
+                        ShowTalkGuide(new Vector3(-68f, -161f, 0f));
                         tempPA = new int[] { tempMonsterTile.grid.gridPosition.Column, tempMonsterTile.grid.gridPosition.Row, 3, 5, };
 
                         ShowMask(tempPA);
@@ -961,12 +961,12 @@ public class SomeCode : MonoBehaviour {
                 break;
 
             case 25:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(38f, -180f, 0f));
+                        ShowTalkGuide(new Vector3(38f, -180f, 0f));
                         tempPA = new int[] { 3, 5, 4, 5, 5, 5, 6, 5, 7, 5, 4, 4, 5, 4, 6, 4 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 5, 5, 5, 4 };
@@ -978,7 +978,7 @@ public class SomeCode : MonoBehaviour {
                     case 2:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(-49f, -200f, 0f));
+                        ShowTalkGuide(new Vector3(-49f, -200f, 0f));
                         tempPA = new int[] { 2, 6, 3, 6, 2, 5, 3, 5, 2, 4, 3, 4, 4, 4, 3, 3 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 3, 4, 4, 4 };
@@ -993,7 +993,7 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case 27:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
@@ -1004,14 +1004,14 @@ public class SomeCode : MonoBehaviour {
                         arrow.transform.position = cm.transform.position;
                         arrow.transform.localPosition += Vector3.up * 130f;
                         UpDownMove(arrow);
-                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x - (bgBottomBG.GetComponent<RectTransform>().rect.width * 0.5f * bgBottomBG.transform.localScale.x + 80f), 0, 0), Vector3.one, 2);
+                        ShowTalkGuide(new Vector3(arrow.transform.localPosition.x - (bgBottomBG.GetComponent<RectTransform>().rect.width * 0.5f * bgBottomBG.transform.localScale.x + 80f), 0, 0), Vector3.one, 2);
                         tempPA = new int[] { };
                         SetLayer(tempPA);
                         break;
                     case 2:
                         Lock();
 
-                        ShowZhiyinTalk(Vector3.zero - Vector3.up * 200f);
+                        ShowTalkGuide(Vector3.zero - Vector3.up * 200f);
                         tempPA = new int[] { 5, 5 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 5, 5 };
@@ -1026,12 +1026,12 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case 33:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(-56f, -59f, 0f));
+                        ShowTalkGuide(new Vector3(-56f, -59f, 0f));
                         tempPA = new int[] { 4, 7, 3, 6, 4, 6, 5, 6, 4, 5 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 4, 7, 4, 6 };
@@ -1044,14 +1044,14 @@ public class SomeCode : MonoBehaviour {
                     case 2:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(107f, -97f, 0f));
+                        ShowTalkGuide(new Vector3(107f, -97f, 0f));
                   
                         tempPA = new int[] { tempMouseTile.grid.gridPosition.Column, tempMouseTile.grid.gridPosition.Row };
                         ShowMask(tempPA);
                         tempPA = new int[] { };
                         SetLayer(tempPA);
 
-                        isClickZhiyinTalk = true;
+                        isClickTalkGuide = true;
                         SaveCompleteLevel();
                         break;
                     default:
@@ -1060,7 +1060,7 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case 36:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
@@ -1072,14 +1072,14 @@ public class SomeCode : MonoBehaviour {
                         arrow.transform.position = cm.transform.position;
                         arrow.transform.localPosition += Vector3.up * 130f;
                         UpDownMove(arrow);
-                        ShowZhiyinTalk(new Vector3(arrow.transform.localPosition.x - (bgBottomBG.GetComponent<RectTransform>().rect.width * 0.5f * bgBottomBG.transform.localScale.x + 80f), -100f, 0), Vector3.one, 2);
+                        ShowTalkGuide(new Vector3(arrow.transform.localPosition.x - (bgBottomBG.GetComponent<RectTransform>().rect.width * 0.5f * bgBottomBG.transform.localScale.x + 80f), -100f, 0), Vector3.one, 2);
                         tempPA = new int[] { };
                         SetLayer(tempPA);
                         break;
                     case 2:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(1f, 82f, 0f));
+                        ShowTalkGuide(new Vector3(1f, 82f, 0f));
                         tempPA = new int[] { 6, 8 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 6, 8 };
@@ -1090,7 +1090,7 @@ public class SomeCode : MonoBehaviour {
                     case 3:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(1f, 36f, 0f));
+                        ShowTalkGuide(new Vector3(1f, 36f, 0f));
                         tempPA = new int[] { 6, 7 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 6, 7 };
@@ -1105,12 +1105,12 @@ public class SomeCode : MonoBehaviour {
                 }
                 break;
             case 40:
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
 
-                        ShowZhiyinTalk(new Vector3(1f, -101f, 0f));
+                        ShowTalkGuide(new Vector3(1f, -101f, 0f));
                         tempPA = new int[] { 5, 7, 5, 6, 5, 5, 6, 6 };
                         ShowMask(tempPA);
                         tempPA = new int[] { 6, 6, 5, 6 };
@@ -1127,18 +1127,18 @@ public class SomeCode : MonoBehaviour {
             case 52:
 
                 ///////////////////////////////////////////////////////
-                switch (ZhiYinProcess)
+                switch (GuideProcess)
                 {
                     case 1:
                         Lock();
 
-                        ShowZhiyinTalk(Vector3.zero - Vector3.up * 250f, Vector3.one * 0.8f);
+                        ShowTalkGuide(Vector3.zero - Vector3.up * 250f, Vector3.one * 0.8f);
                         tempPA = new int[] {0,3,1,3,2,3,3,3,4,3,6,5,7,5,8,5,9,5,10,5,
                                             0,2,1,2,2,2,3,2,4,2,6,6,7,6,8,6,9,6,10,6};
                         ShowMask(tempPA);
                         tempPA = new int[] { };
                         SetLayer(tempPA);
-                        isClickZhiyinTalk = true;
+                        isClickTalkGuide = true;
                         break;
                     case 2:
                         Lock();
@@ -1173,16 +1173,16 @@ public class SomeCode : MonoBehaviour {
         }
     }
 
-    public int ZhiYinProcess
+    public int GuideProcess
     {
         get
         {
-            return zhiYinProcess;
+            return GuideProcess;
         }
 
         set
         {
-            zhiYinProcess = value;
+            GuideProcess = value;
         }
     }
 
@@ -1313,8 +1313,8 @@ public class SomeCode : MonoBehaviour {
             LeanTween.cancel(handImg);
             LeanTween.cancel(arrow);
             handImg.SetActive(false);
-            zhiyinTalk.gameObject.SetActive(false);
-            zhiyinTalk.transform.localScale = Vector3.one;
+            TalkGuide.gameObject.SetActive(false);
+            TalkGuide.transform.localScale = Vector3.one;
             arrow.SetActive(false);
 
             arrow.transform.rotation = Quaternion.identity;
@@ -1327,7 +1327,7 @@ public class SomeCode : MonoBehaviour {
             {
                 numMoveMask.SetActive(false);
             }
-            isClickZhiyinTalk = false;
+            isClickTalkGuide = false;
             if (Global.gameUI.activeSelf)
             {
                 GamePlayController.gamePlayController.GetComponent<GamePlayController>().ShowHelp();
