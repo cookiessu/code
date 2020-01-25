@@ -32,7 +32,7 @@ public class SomeCode : MonoBehaviour {
         string SubjectState
         {
             get;
-            set;
+            set; 
         }
     }
 
